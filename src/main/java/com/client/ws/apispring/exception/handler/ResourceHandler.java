@@ -3,6 +3,7 @@ package com.client.ws.apispring.exception.handler;
 import com.client.ws.apispring.dto.error.ErrorResponseDTO;
 import com.client.ws.apispring.exception.BadRequestException;
 import com.client.ws.apispring.exception.NotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -47,5 +48,14 @@ public class ResourceHandler {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build());
 
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseDTO> dataIntegrityViolationException(DataIntegrityViolationException d) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponseDTO.builder()
+                .message(d.getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .build());
     }
 }
