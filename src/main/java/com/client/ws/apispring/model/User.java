@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="users_id")
     private Long id;
 
@@ -34,7 +34,7 @@ public class User implements Serializable {
     @Column(unique = true)
     private String phone;
 
-    @Column(name="dt_experiration")
+    @Column(name="dt_expiration")
     private LocalDate dtExperiration;
 
     @ManyToOne(fetch = FetchType.LAZY)
