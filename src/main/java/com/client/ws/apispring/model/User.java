@@ -23,11 +23,16 @@ public class User implements Serializable {
     private Long id;
 
     private String Nome;
+
     private String email;
+
     private String cpf;
 
     @Column(name="dt_subscription")
     private LocalDate dtSubscription = LocalDate.now();
+
+    @Column(unique = true)
+    private String phone;
 
     @Column(name="dt_experiration")
     private LocalDate dtExperiration;
