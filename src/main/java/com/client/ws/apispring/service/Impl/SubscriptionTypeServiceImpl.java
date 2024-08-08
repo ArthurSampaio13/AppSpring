@@ -3,6 +3,7 @@ package com.client.ws.apispring.service.Impl;
 import com.client.ws.apispring.dto.SubscriptionTypeDTO;
 import com.client.ws.apispring.exception.BadRequestException;
 import com.client.ws.apispring.exception.NotFoundException;
+import com.client.ws.apispring.mapper.SubscriptionTypeMapper;
 import com.client.ws.apispring.model.SubscriptionType;
 import com.client.ws.apispring.repository.SubscriptionTypeRepository;
 import com.client.ws.apispring.service.SubscriptionTypeService;
@@ -27,7 +28,8 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     @Override
     public SubscriptionType findById(Long id) {
         Optional<SubscriptionType> optionalSubscriptionType = subscriptionTypeRepository.findById(id);
-        return optionalSubscriptionType.orElseThrow(() -> new NotFoundException("SubscriptionType não encontrado"));
+        return optionalSubscriptionType
+                .orElseThrow(() -> new NotFoundException("SubscriptionType não encontrado"));
     }
 
     @Override
@@ -35,26 +37,16 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
         if (Objects.nonNull(subscriptionType.getId())) {
             throw new BadRequestException("ID deve ser nulo");
         }
-        return subscriptionTypeRepository.save(SubscriptionType.builder()
-                        .id(subscriptionType.getId())
-                        .Nome(subscriptionType.getNome())
-                        .AcessMonth(subscriptionType.getAcessMonth())
-                        .price(subscriptionType.getPrice())
-                        .productKey(subscriptionType.getProductKey())
-                 .build());
+        return subscriptionTypeRepository
+                .save(SubscriptionTypeMapper.fromDtoToEntity(subscriptionType));
     }
 
     @Override
     public SubscriptionType update(Long id, SubscriptionTypeDTO subscriptionType) {
         findById(id);
-
-        return subscriptionTypeRepository.save(SubscriptionType.builder()
-                .id(id)
-                .Nome(subscriptionType.getNome())
-                .AcessMonth(subscriptionType.getAcessMonth())
-                .price(subscriptionType.getPrice())
-                .productKey(subscriptionType.getProductKey())
-                .build());
+        subscriptionType.setId(id);
+        return subscriptionTypeRepository
+                .save(SubscriptionTypeMapper.fromDtoToEntity(subscriptionType));
     }
 
     @Override
